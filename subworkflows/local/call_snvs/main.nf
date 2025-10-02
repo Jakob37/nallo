@@ -1,7 +1,8 @@
 //
 // Workflow to call SNVs
 //
-include { DEEPVARIANT_RUNDEEPVARIANT } from '../../../modules/nf-core/deepvariant/rundeepvariant/main'
+include { DEEPVARIANT_RUNDEEPVARIANT   } from '../../../modules/nf-core/deepvariant/rundeepvariant/main'
+include { DNASCOPE_LONGREAD_CALL_SNVS  } from '../../../modules/local/sentieon/dnascope_longread/main'
 
 workflow CALL_SNVS {
     take:
@@ -12,11 +13,11 @@ workflow CALL_SNVS {
     variant_caller //  string: which variant caller to use, i.e. "deepvariant"
 
     main:
-    ch_versions   = Channel.empty()
-    ch_vcf        = Channel.empty()
-    ch_index      = Channel.empty()
-    ch_gvcf       = Channel.empty()
-    ch_gvcf_index = Channel.empty()
+    ch_versions   = channel.empty()
+    ch_vcf        = channel.empty()
+    ch_index      = channel.empty()
+    ch_gvcf       = channel.empty()
+    ch_gvcf_index = channel.empty()
 
     if (variant_caller.equals("deepvariant")) {
 
@@ -32,8 +33,25 @@ workflow CALL_SNVS {
         ch_vcf        = DEEPVARIANT_RUNDEEPVARIANT.out.vcf
         ch_index      = DEEPVARIANT_RUNDEEPVARIANT.out.vcf_index
         ch_gvcf       = DEEPVARIANT_RUNDEEPVARIANT.out.gvcf
-        ch_gvcf_index = DEEPVARIANT_RUNDEEPVARIANT.out.gvcf_index
+        ch_gvcf_index = DEEPVARIANT_RUNDEEPVARIANT.out.gvcf_tbi
+    } else if (variant_caller.equals("sentieon")) {
+
+    DNASCOPE_LONGREAD_CALL_SNVS(
+            ch_bam_bai_bed,
+            ch_fasta,
+            ch_fai,
+            params.sentieon_model_bundle,
+            params.sentieon_tech,
+            params.sentieon_female_diploid_bed,
+            params.sentieon_male_diploid_bed,
+            params.sentieon_male_haploid_bed,
+        )
+        ch_vcf        = DNASCOPE_LONGREAD_CALL_SNVS.out.vcf
+        ch_index      = DNASCOPE_LONGREAD_CALL_SNVS.out.vcf_tbi
+        ch_gvcf       = DNASCOPE_LONGREAD_CALL_SNVS.out.gvcf
+        ch_gvcf_index = DNASCOPE_LONGREAD_CALL_SNVS.out.gvcf_tbi
     }
+
 
     emit:
     vcf        = ch_vcf        // channel: [ val(meta), path(vcf) ]
