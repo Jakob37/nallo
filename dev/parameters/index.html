@@ -17,8 +17,11 @@
         <link rel="next" href="../CITATIONS/">
       
       
+        
+      
+      
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.23">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
     
     
       
@@ -26,10 +29,10 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.84d31ad4.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -52,7 +55,6 @@
     
       
 
-    
     
     
   </head>
@@ -270,9 +272,14 @@
   
   
   <span class="md-ellipsis">
+    
+  
     Home
+  
+
     
   </span>
+  
   
 
       </a>
@@ -292,9 +299,14 @@
   
   
   <span class="md-ellipsis">
+    
+  
     Usage
+  
+
     
   </span>
+  
   
 
       </a>
@@ -314,9 +326,14 @@
   
   
   <span class="md-ellipsis">
+    
+  
     Output
+  
+
     
   </span>
+  
   
 
       </a>
@@ -345,9 +362,14 @@
   
   
   <span class="md-ellipsis">
+    
+  
     Parameters
+  
+
     
   </span>
+  
   
 
           <span class="md-nav__icon md-icon"></span>
@@ -358,9 +380,14 @@
   
   
   <span class="md-ellipsis">
+    
+  
     Parameters
+  
+
     
   </span>
+  
   
 
       </a>
@@ -383,7 +410,9 @@
         <li class="md-nav__item">
   <a href="#workflow-skip-options" class="md-nav__link">
     <span class="md-ellipsis">
-      Workflow skip options
+      
+        Workflow skip options
+      
     </span>
   </a>
   
@@ -392,7 +421,9 @@
         <li class="md-nav__item">
   <a href="#inputoutput-options" class="md-nav__link">
     <span class="md-ellipsis">
-      Input/output options
+      
+        Input/output options
+      
     </span>
   </a>
   
@@ -401,7 +432,9 @@
         <li class="md-nav__item">
   <a href="#reference-genome-options" class="md-nav__link">
     <span class="md-ellipsis">
-      Reference genome options
+      
+        Reference genome options
+      
     </span>
   </a>
   
@@ -410,7 +443,9 @@
         <li class="md-nav__item">
   <a href="#institutional-config-options" class="md-nav__link">
     <span class="md-ellipsis">
-      Institutional config options
+      
+        Institutional config options
+      
     </span>
   </a>
   
@@ -419,7 +454,9 @@
         <li class="md-nav__item">
   <a href="#generic-options" class="md-nav__link">
     <span class="md-ellipsis">
-      Generic options
+      
+        Generic options
+      
     </span>
   </a>
   
@@ -428,7 +465,9 @@
         <li class="md-nav__item">
   <a href="#workflow-options" class="md-nav__link">
     <span class="md-ellipsis">
-      Workflow options
+      
+        Workflow options
+      
     </span>
   </a>
   
@@ -454,9 +493,14 @@
   
   
   <span class="md-ellipsis">
+    
+  
     Citations
+  
+
     
   </span>
+  
   
 
       </a>
@@ -493,7 +537,9 @@
         <li class="md-nav__item">
   <a href="#workflow-skip-options" class="md-nav__link">
     <span class="md-ellipsis">
-      Workflow skip options
+      
+        Workflow skip options
+      
     </span>
   </a>
   
@@ -502,7 +548,9 @@
         <li class="md-nav__item">
   <a href="#inputoutput-options" class="md-nav__link">
     <span class="md-ellipsis">
-      Input/output options
+      
+        Input/output options
+      
     </span>
   </a>
   
@@ -511,7 +559,9 @@
         <li class="md-nav__item">
   <a href="#reference-genome-options" class="md-nav__link">
     <span class="md-ellipsis">
-      Reference genome options
+      
+        Reference genome options
+      
     </span>
   </a>
   
@@ -520,7 +570,9 @@
         <li class="md-nav__item">
   <a href="#institutional-config-options" class="md-nav__link">
     <span class="md-ellipsis">
-      Institutional config options
+      
+        Institutional config options
+      
     </span>
   </a>
   
@@ -529,7 +581,9 @@
         <li class="md-nav__item">
   <a href="#generic-options" class="md-nav__link">
     <span class="md-ellipsis">
-      Generic options
+      
+        Generic options
+      
     </span>
   </a>
   
@@ -538,7 +592,9 @@
         <li class="md-nav__item">
   <a href="#workflow-options" class="md-nav__link">
     <span class="md-ellipsis">
-      Workflow options
+      
+        Workflow options
+      
     </span>
   </a>
   
@@ -554,6 +610,7 @@
           
           
             <div class="md-content" data-md-component="content">
+              
               <article class="md-content__inner md-typeset">
                 
                   
@@ -612,8 +669,8 @@
 <td></td>
 </tr>
 <tr>
-<td><code>skip_methylation_pileups</code></td>
-<td>Skip generation of methylation pileups</td>
+<td><code>skip_methylation_calling</code></td>
+<td>Skip methylation calling</td>
 <td><code>boolean</code></td>
 <td>False</td>
 <td></td>
@@ -636,10 +693,26 @@
 <td></td>
 </tr>
 <tr>
+<td><code>skip_chromograph</code></td>
+<td>Skip chromograph image generation. True if both plot_chromograph_coverage and plot_chromograph_autozygosity are set to false.</td>
+<td><code>boolean</code></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
 <td><code>skip_peddy</code></td>
 <td>Skip peddy</td>
 <td><code>boolean</code></td>
 <td>False</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code>skip_sambamba_depth</code></td>
+<td>Skip sambamba depth. True unless <code>--sambamba_regions</code> is provided.</td>
+<td><code>boolean</code></td>
+<td></td>
 <td></td>
 <td></td>
 </tr>
@@ -836,10 +909,34 @@
 <td></td>
 </tr>
 <tr>
-<td><code>methylation_call_regions</code></td>
+<td><code>methbat_regions</code></td>
+<td>A tsv file with only regions of interest (example here: https://github.com/PacificBiosciences/MethBat/blob/main/data/cpgIslandExt.sorted.hg38.tsv) or with both regions and background cohort values (example here: https://github.com/PacificBiosciences/MethBat/blob/main/data/meth_profile_model.tsv), made with methbat build</td>
+<td><code>string</code></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code>modkit_call_regions</code></td>
 <td>A BED file with regions of interest for the methylation pileups. By default this is the same as <code>target_regions</code>.</td>
 <td><code>string</code></td>
 <td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code>mosdepth_regions</code></td>
+<td>A BED file with regions of interest used in mosdepth. By default this is the same as <code>qc_regions</code>.</td>
+<td><code>string</code></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code>mosdepth_d4_output</code></td>
+<td>Should mosdepth output d4-files.</td>
+<td><code>boolean</code></td>
+<td>False</td>
 <td></td>
 <td></td>
 </tr>
@@ -932,8 +1029,24 @@
 <td></td>
 </tr>
 <tr>
+<td><code>strdrop_training_set_json</code></td>
+<td>A JSON file containing the training set for strdrop</td>
+<td><code>string</code></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
 <td><code>peddy_sites</code></td>
 <td>A file path to a VCF of known polymorphic sites for peddy. You may need to create a custom sites file if you have incomplete or targeted data.</td>
+<td><code>string</code></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code>sambamba_regions</code></td>
+<td>A BED file with regions of interest used in sambamba depth. By default this is the same as <code>qc_regions</code>.</td>
 <td><code>string</code></td>
 <td></td>
 <td></td>
@@ -952,22 +1065,6 @@
 <td>Base URL or local path to location of modules test dataset files</td>
 <td><code>string</code></td>
 <td>https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/</td>
-<td></td>
-<td>True</td>
-</tr>
-<tr>
-<td><code>pipelines_testdata_base_path</code></td>
-<td>Base URL or local path to location of pipeline test dataset files</td>
-<td><code>string</code></td>
-<td>https://raw.githubusercontent.com/genomic-medicine-sweden/test-datasets/4645adc45ba1ea0363b19ba3ef3c52d62193816f/</td>
-<td></td>
-<td>True</td>
-</tr>
-<tr>
-<td><code>trace_report_suffix</code></td>
-<td>Suffix to add to the trace report filename. Default is the date and time in the format yyyy-MM-dd_HH-mm-ss.</td>
-<td><code>string</code></td>
-<td></td>
 <td></td>
 <td>True</td>
 </tr>
@@ -1171,6 +1268,46 @@
 <td></td>
 <td>True</td>
 </tr>
+<tr>
+<td><code>pipelines_testdata_base_path</code></td>
+<td>Base URL or local path to location of pipeline test dataset files</td>
+<td><code>string</code></td>
+<td>https://raw.githubusercontent.com/genomic-medicine-sweden/test-datasets/00b81530023d27539e06b9600f29c647ed1f9bc8a/</td>
+<td></td>
+<td>True</td>
+</tr>
+<tr>
+<td><code>trace_report_suffix</code></td>
+<td>Suffix to add to the trace report filename. Default is the date and time in the format yyyy-MM-dd_HH-mm-ss.</td>
+<td><code>string</code></td>
+<td></td>
+<td></td>
+<td>True</td>
+</tr>
+<tr>
+<td><code>help</code></td>
+<td>Display the help message.</td>
+<td><code>['boolean', 'string']</code></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code>help_full</code></td>
+<td>Display the full detailed help message.</td>
+<td><code>boolean</code></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code>show_hidden</code></td>
+<td>Display hidden parameters in the help message (only works when --help or --help_full are provided).</td>
+<td><code>boolean</code></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
 </tbody>
 </table>
 <h2 id="workflow-options">Workflow options</h2>
@@ -1187,6 +1324,22 @@
 </tr>
 </thead>
 <tbody>
+<tr>
+<td><code>bcftools_roh_af_tag</code></td>
+<td>AF-tag that variants have been annotated with for use in the chromograph subworkflow. By default set to <code>--chromograph_af_tag</code>.</td>
+<td><code>string</code></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code>chromograph_af_tag</code></td>
+<td>AF-tag to use in the chromograph subworkflow to generate plots of autozygosity. SNVs need to be annotated with allele frequencies specified by this tag for autozygosity plotting to work.</td>
+<td><code>string</code></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
 <tr>
 <td><code>preset</code></td>
 <td>Enable or disable certain parts of the pipeline by default, depending on data type (<code>revio</code>, <code>pacbio</code>, <code>ONT_R10</code>) (accepted: <code>revio</code>|<code>pacbio</code>|<code>ONT_R10</code>)</td>
@@ -1264,6 +1417,38 @@
 <td>Hifiasm preset, is set to <code>--ont</code> when <code>--preset ONT_R10</code> is active. (accepted: <code>`\|</code>--ont`)</td>
 <td><code>string</code></td>
 <td>None</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code>run_methbat</code></td>
+<td>Run methbat for methylation analysis, set to <code>true</code> by default when <code>--preset revio</code> is active.</td>
+<td><code>boolean</code></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code>run_modkit</code></td>
+<td>Run modkit for methylation analysis, set to <code>true</code> by default when <code>--preset ONT_R10</code> is active.</td>
+<td><code>boolean</code></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code>methbat_male_label</code></td>
+<td>Label used for male samples in methbat profile.</td>
+<td><code>string</code></td>
+<td>MALE</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code>methbat_female_label</code></td>
+<td>Label used for female samples in methbat profile.</td>
+<td><code>string</code></td>
+<td>FEMALE</td>
 <td></td>
 <td></td>
 </tr>
@@ -1348,6 +1533,14 @@
 <td>True</td>
 </tr>
 <tr>
+<td><code>extra_methbat_profile_options</code></td>
+<td>Extra options to methbat profile.</td>
+<td><code>string</code></td>
+<td></td>
+<td></td>
+<td>True</td>
+</tr>
+<tr>
 <td><code>extra_modkit_options</code></td>
 <td>Extra options to modkit, used for test profile.</td>
 <td><code>string</code></td>
@@ -1388,10 +1581,154 @@
 <td>True</td>
 </tr>
 <tr>
+<td><code>genmod_compound_snv_penalty</code></td>
+<td>Genmod compound penalty for SNVs.</td>
+<td><code>integer</code></td>
+<td>6</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code>genmod_compound_snv_threshold</code></td>
+<td>Genmod compound threshold for SNVs.</td>
+<td><code>integer</code></td>
+<td>9</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code>genmod_compound_sv_penalty</code></td>
+<td>Genmod compound penalty for SVs.</td>
+<td><code>integer</code></td>
+<td>6</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code>genmod_compound_sv_threshold</code></td>
+<td>Genmod compound threshold for SVs.</td>
+<td><code>integer</code></td>
+<td>9</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code>genmod_compound_singleton_snv_penalty</code></td>
+<td>Genmod compound penalty for SNVs. Applied in families with an affected individual without two parents. By default same as <code>--genmod_compound_snv_penalty</code>.</td>
+<td><code>integer</code></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code>genmod_compound_singleton_snv_threshold</code></td>
+<td>Genmod compound threshold for SNVs. Applied in families with an affected individual without two parents. By default same as <code>--genmod_compound_snv_threshold</code>.</td>
+<td><code>integer</code></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code>genmod_compound_singleton_sv_penalty</code></td>
+<td>Genmod compound penalty for SVs. Applied in families with an affected individual without two parents. By default same as <code>--genmod_compound_sv_penalty</code>.</td>
+<td><code>integer</code></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code>genmod_compound_singleton_sv_threshold</code></td>
+<td>Genmod compound threshold for SVs. Applied in families with an affected individual without two parents. By default same as <code>--genmod_compound_sv_threshold</code>.</td>
+<td><code>integer</code></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code>genmod_compound_trio_snv_penalty</code></td>
+<td>Genmod compound penalty for SNVs. Applied in families with at least one affected individual with two parents. By default same as <code>--genmod_compound_snv_penalty</code>.</td>
+<td><code>integer</code></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code>genmod_compound_trio_snv_threshold</code></td>
+<td>Genmod compound threshold for SNVs. Applied in families with at least one affected individual with two parents. By default same as <code>--genmod_compound_snv_threshold</code>.</td>
+<td><code>integer</code></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code>genmod_compound_trio_sv_penalty</code></td>
+<td>Genmod compound penalty for SVs. Applied in families with at least one affected individual with two parents. By default same as <code>--genmod_compound_sv_penalty</code>.</td>
+<td><code>integer</code></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code>genmod_compound_trio_sv_threshold</code></td>
+<td>Genmod compound threshold for SVs. Applied in families with at least one affected individual with two parents. By default same as <code>--genmod_compound_sv_threshold</code>.</td>
+<td><code>integer</code></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code>plot_chromograph_autozygosity</code></td>
+<td>Whether to plot chromograph autozygosity plots in the chromograph subworkflow. This requires SNVs to be annotated with allele frequencies, and is therefore false by default unless <code>--bcftools_roh_af_tag</code> and <code>--rhocallviz_af_tag</code> have been set, in which case it is assumed that the user has annotated the SNVs with the correct tag.</td>
+<td><code>boolean</code></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code>plot_chromograph_coverage</code></td>
+<td>Whether to plot chromograph coverage plots in the chromograph subworkflow.</td>
+<td><code>boolean</code></td>
+<td>True</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
 <td><code>pre_vep_snv_filter_expression</code></td>
 <td>An expression that is passed to bcftools view to filter SNVs before being annotated with VEP, e.g. --pre_vep_snv_filter_expression "-e 'INFO/AQ&gt;60'". The expression applies to both the clinical and the research VCFs.</td>
 <td><code>string</code></td>
 <td>None</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code>rhocallviz_af_tag</code></td>
+<td>AF-tag that variants have been annotated with, for use in the chromograph subworkflow. By default set to <code>--chromograph_af_tag. |</code>string`</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code>rhocallviz_min_af</code></td>
+<td>Minimum allele frequency for variants to be included in rhocall viz within the chromograph subworkflow.</td>
+<td><code>number</code></td>
+<td>0.0001</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code>rhocallviz_min_qual</code></td>
+<td>Minimum quality for variants to be included in rhocall viz within the chromograph subworkflow.</td>
+<td><code>number</code></td>
+<td>10.0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code>tiddit_bin_size</code></td>
+<td>Bin size to use for TIDDIT coverage wig generation in the chromograph subworkflow.</td>
+<td><code>integer</code></td>
+<td>500</td>
 <td></td>
 <td></td>
 </tr>
@@ -1491,10 +1828,11 @@
     
     
       
-      <script id="__config" type="application/json">{"base": "..", "features": ["content.code.annotate", "content.code.copy", "navigation.instant", "navigation.top", "navigation.tracking", "navigation.sections", "navigation.footer", "search.share", "toc.follow"], "search": "../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["content.code.annotate", "content.code.copy", "navigation.instant", "navigation.top", "navigation.tracking", "navigation.sections", "navigation.footer", "search.share", "toc.follow"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
       
     
   </body>
