@@ -284,9 +284,6 @@ workflow PIPELINE_INITIALISATION {
     // Custom validation for pipeline parameters
     //
     validateInputParameters(parameterStatus, workflowSkips, workflowDependencies, fileDependencies)
-    if (!params.skip_upd && !params.upd_af_tag) {
-        error("ERROR: --upd_af_tag is required for UPD calling.")
-    }
     validatePacBioLicense(val_phaser, val_str_caller, val_sv_callers, val_sv_callers_to_run, val_sv_callers_to_merge, val_skip_call_paralogs, val_mitochondrial_caller, val_skip_portello)
     validateWorkflowCompatibility(val_str_caller, val_skip_repeat_annotation, val_snv_caller, val_snv_calling_processes, val_skip_sv_calling, val_sv_callers_to_run, val_skip_snv_calling, val_cnv_expected_xy_cn, val_cnv_expected_xx_cn, val_cnv_excluded_regions, val_skip_phasing, val_phaser, val_sv_callers_to_merge, val_premapped, val_skip_portello)
 
@@ -337,6 +334,11 @@ workflow PIPELINE_INITIALISATION {
     // Check that target_regions is provided when using the ONT_R10_AS preset
     if (val_preset == 'ONT_R10_AS' && !val_target_regions) {
         error("Error: --target_regions must be provided when using --preset ONT_R10_AS. The ONT_R10_AS preset is designed for adaptive sampling runs which require target regions for calling and QC.")
+    }
+
+    // Check that an allele frequency tag is available when UPD calling is active
+    if (!params.skip_upd && !params.upd_af_tag) {
+        error("Error: --upd_af_tag is required when UPD calling is enabled. Set --upd_af_tag or --chromograph_af_tag, or set --skip_upd true to disable UPD calling.")
     }
 
     // Check that sex check is not skipped if there are samples with unknown sex
