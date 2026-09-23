@@ -21,7 +21,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
@@ -29,7 +29,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
@@ -542,6 +542,17 @@
     <span class="md-ellipsis">
       
         Methylation calling
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gens-input-preparation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Gens input preparation
       
     </span>
   </a>
@@ -1151,6 +1162,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#gens-input-preparation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Gens input preparation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#repeat-calling" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1507,7 +1529,7 @@ NB: The order of profiles is important! They are loaded in sequence, so later pr
 </ol>
 <h3 id="samplesheet">Samplesheet</h3>
 <p>First, you will need to create a samplesheet with information about the samples you would like to analyze before running the pipeline. Use this parameter to specify its location.</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>--input<span class="w"> </span><span class="s1">&#39;[path to samplesheet file]&#39;</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>--input<span class="w"> </span><span class="s1">'[path to samplesheet file]'</span>
 </span></code></pre></div>
 <p>It has to be a comma-separated file with seven columns and a header row, as shown in the example below:</p>
 <div class="language-console highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="go">project,sample,file,family_id,paternal_id,maternal_id,sex,phenotype</span>
@@ -1634,6 +1656,7 @@ NB: The order of profiles is important! They are loaded in sequence, so later pr
 <p>Turned off with <code>--skip_call_paralogs</code>.</p>
 <h4 id="snv-calling">SNV calling</h4>
 <p>This subworkflow depends on the alignment subworkflow, and requires PARs.</p>
+<p>By default the pipeline uses <a href="https://github.com/google/deepvariant">DeepVariant</a> for long-read SNV calling. To enable <a href="https://github.com/Sentieon/sentieon-cli/blob/main/docs/dnascope-longread.md">Sentieon DNAscope Long Read</a>, set <code>--snv_caller sentieon</code>. Make the Sentieon license available by adding a base64-encoded license string to the Nextflow secrets store (<code>nextflow secrets set SENTIEON_LICENSE_BASE64 ...</code>) or by exporting the same variable before running the pipeline.</p>
 <table>
 <thead>
 <tr>
@@ -1644,10 +1667,42 @@ NB: The order of profiles is important! They are loaded in sequence, so later pr
 <tbody>
 <tr>
 <td><code>par_regions</code></td>
-<td>A BED file with PAR regions (e.g. <a href="https://storage.googleapis.com/deepvariant/case-study-testdata/GRCh38_PAR.bed">GRCh38_PAR.bed</a>)</td>
+<td>A BED file with PAR regions (e.g. <a href="https://storage.googleapis.com/deepvariant/case-study-testdata/GRCh38_PAR.bed">GRCh38_PAR.bed</a>). Used by DeepVariant.</td>
 </tr>
 </tbody>
 </table>
+<p>Additional inputs are required for Sentieon DNAscope:</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>sentieon_model_bundle</code></td>
+<td>Path to the DNAscope model bundle to load. Sentieon provides pre-trained bundles in the <a href="https://github.com/Sentieon/sentieon-models">sentieon-models</a> repository.</td>
+</tr>
+<tr>
+<td><code>sentieon_tech</code></td>
+<td>Sequencing technology used by Sentieon DNAscope (<code>HiFi</code> or <code>ONT</code>). Defaults to <code>HiFi</code>, but is automatically set to <code>ONT</code> when running with the ONT presets.</td>
+</tr>
+<tr>
+<td><code>sentieon_male_haploid_bed</code></td>
+<td>BED file that restricts haploid variant calling for male samples (typically the Y chromosome non-PAR region).</td>
+</tr>
+<tr>
+<td><code>sentieon_male_diploid_bed</code></td>
+<td>BED file that restricts diploid variant calling for male samples (typically autosomes + chrX PAR).</td>
+</tr>
+<tr>
+<td><code>sentieon_female_diploid_bed</code></td>
+<td>BED file that restricts diploid variant calling for female samples (typically autosomes + chrX).</td>
+</tr>
+</tbody>
+</table>
+<p>When these BED files are omitted the DNAscope process will reuse the scatter BEDs generated by the pipeline for diploid variant calling.</p>
 <p>Turned off with <code>--skip_snv_calling</code>.</p>
 <h4 id="call-svs">Call SVs</h4>
 <p>This subworkflow depends on the alignment subworkflow.</p>
@@ -1727,6 +1782,22 @@ The phaser can be chosen using the <code>--phaser</code> argument. See the follo
 <p>Turned off with <code>--skip_phasing</code>.</p>
 <h4 id="methylation-calling">Methylation calling</h4>
 <p>This subworkflow relies on alignment and short variant calling subworkflows, but requires no additional files. By default, modkit is run when <code>--preset ONT_R10</code> is active, while methbat is run when <code>--preset revio</code> is active.</p>
+<p>If MethBat is used, it requires the following file:</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>methbat_regions</code></td>
+<td>A tsv file with only regions of interest (<a href="https://github.com/PacificBiosciences/MethBat/blob/main/data/cpgIslandExt.sorted.hg38.tsv">example</a>), or with both regions and background cohort values (<a href="https://github.com/PacificBiosciences/MethBat/blob/main/data/meth_profile_model.tsv">example</a>), made with methbat build</td>
+</tr>
+</tbody>
+</table>
+<p>If modkit is used, the following optional parameter can be provided:</p>
 <table>
 <thead>
 <tr>
@@ -1739,10 +1810,6 @@ The phaser can be chosen using the <code>--phaser</code> argument. See the follo
 <td><code>bigwig_modcodes</code></td>
 <td>A comma-separated list of codes of base modifications to include in bigWig files for visualization. Defaults to <code>h,m</code>, i.e. 5hmC and 5mC. See <a href="https://samtools.github.io/hts-specs/SAMtags.pdf">the SAM specification</a> for a complete list</td>
 </tr>
-<tr>
-<td><code>methbat_regions</code></td>
-<td>A tsv file with only regions of interest (<a href="https://github.com/PacificBiosciences/MethBat/blob/main/data/cpgIslandExt.sorted.hg38.tsv">example</a>), or with both regions and background cohort values (<a href="https://github.com/PacificBiosciences/MethBat/blob/main/data/meth_profile_model.tsv">example</a>), made with methbat build</td>
-</tr>
 </tbody>
 </table>
 <p>Turned off with <code>--skip_methylation_calling</code>.</p>
@@ -1750,6 +1817,35 @@ The phaser can be chosen using the <code>--phaser</code> argument. See the follo
 <p class="admonition-title">Tip</p>
 <p>By default, samples are compared to the background cohort with the same sex as found in the sample metadata. If the background cohort tsv file does not contain MALE and FEMALE labels, this can be changed with <code>--methbat_male_label</code> and <code>--methbat_female_label</code>. Additional labels can be added with --profile-label through the <code>--extra_methbat_profile_options</code> parameter.</p>
 </div>
+<h4 id="gens-input-preparation">Gens input preparation</h4>
+<p>This subworkflow prepares coverage and B-allele frequency (BAF) files for downstream use in <a href="https://github.com/SMD-Bioinformatics-Lund/gens">Gens</a>. It relies on the alignment and SNV calling subworkflows and requires the following additional files:</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>gens_baf_positions</code></td>
+<td>Tab-delimited file with variant positions used to calculate B-allele frequencies for Gens inputs.</td>
+</tr>
+<tr>
+<td><code>gens_panel_of_normals</code></td>
+<td>Panel of normals (HDF5) used to standardize coverage for Gens inputs. See the GATK guide for <a href="https://gatk.broadinstitute.org/hc/en-us/articles/360040510031-CreateReadCountPanelOfNormals">creating a read count panel of normals</a>. This can be generated using</td>
+</tr>
+<tr>
+<td>https://github.com/nf-core/createpanelrefs. For long reads we have used mosdepth to calculate coverage per-bin rather than counting reads per bin, and then created a panel of normals using the GATK command.</td>
+<td></td>
+</tr>
+<tr>
+<td><code>gens_coverage_bins</code></td>
+<td>BED file with bins for which to calculate coverage. Typically 100bp bins across the genome are used in Gens. The bins should match those used to prepare the panel of normals.</td>
+</tr>
+</tbody>
+</table>
+<p>Turned off with <code>--skip_prepare_gens_input</code>.</p>
 <h4 id="repeat-calling">Repeat calling</h4>
 <p>This subworkflow requires haplotagged BAM files, and such relies on aligment, SNV calling and phasing subworkflows. It requires the following additional files:</p>
 <table>
@@ -2053,7 +2149,7 @@ Some HPC setups also allow you to run nextflow within a cluster job submitted yo
 <h2 id="nextflow-memory-requirements">Nextflow memory requirements</h2>
 <p>In some cases, the Nextflow Java virtual machines can start to request a large amount of memory.
 We recommend adding the following line to your environment to limit this (typically in <code>~/.bashrc</code> or <code>~./bash_profile</code>):</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="nv">NXF_OPTS</span><span class="o">=</span><span class="s1">&#39;-Xms1g -Xmx4g&#39;</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="nv">NXF_OPTS</span><span class="o">=</span><span class="s1">'-Xms1g -Xmx4g'</span>
 </span></code></pre></div>
 <h2 id="running-the-pipeline-without-internet-access">Running the pipeline without internet access</h2>
 <h3 id="download-pipeline-and-containers">Download pipeline and containers</h3>
@@ -2159,7 +2255,7 @@ We recommend adding the following line to your environment to limit this (typica
       <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["content.code.annotate", "content.code.copy", "navigation.instant", "navigation.top", "navigation.tracking", "navigation.sections", "navigation.footer", "search.share", "toc.follow"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
       
     
   </body>

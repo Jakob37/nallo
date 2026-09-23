@@ -21,7 +21,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
@@ -29,7 +29,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
@@ -764,6 +764,14 @@
 <td></td>
 <td></td>
 </tr>
+<tr>
+<td><code>skip_prepare_gens_input</code></td>
+<td>Skip preparing input data for Gens</td>
+<td><code>boolean</code></td>
+<td>False</td>
+<td></td>
+<td></td>
+</tr>
 </tbody>
 </table>
 <h2 id="inputoutput-options">Input/output options</h2>
@@ -1029,6 +1037,30 @@
 <td></td>
 </tr>
 <tr>
+<td><code>gens_baf_positions</code></td>
+<td>Tab-delimited file with variant positions used to calculate B-allele frequencies for Gens inputs.</td>
+<td><code>string</code></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code>gens_panel_of_normals</code></td>
+<td>Panel of normals (HDF5) used to standardize coverage for Gens inputs (https://gatk.broadinstitute.org/hc/en-us/articles/360040510031-CreateReadCountPanelOfNormals). This can be generated using https://github.com/nf-core/createpanelrefs. For long reads we have used mosdepth to calculate coverage per-bin rather than counting reads per bin, and then created a panel of normals using the GATK command.</td>
+<td><code>string</code></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code>gens_coverage_bins</code></td>
+<td>Bed file with bins for which to calculate coverage. Typically 100bp bins across the genome is used in Gens. It should be the same as the one used to prepare the panel of normals.</td>
+<td><code>string</code></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
 <td><code>strdrop_training_set_json</code></td>
 <td>A JSON file containing the training set for strdrop</td>
 <td><code>string</code></td>
@@ -1272,7 +1304,7 @@
 <td><code>pipelines_testdata_base_path</code></td>
 <td>Base URL or local path to location of pipeline test dataset files</td>
 <td><code>string</code></td>
-<td>https://raw.githubusercontent.com/genomic-medicine-sweden/test-datasets/00b81530023d27539e06b9600f29c647ed1f9bc8a/</td>
+<td>https://raw.githubusercontent.com/genomic-medicine-sweden/test-datasets/5880345753543268996107b0e0fedc86cdaa75c7/</td>
 <td></td>
 <td>True</td>
 </tr>
@@ -1382,7 +1414,7 @@
 </tr>
 <tr>
 <td><code>snv_caller</code></td>
-<td>Which short variant software to use (<code>deepvariant</code>) (accepted: <code>deepvariant</code>)</td>
+<td>Which short variant software to use (<code>deepvariant</code>) (accepted: <code>deepvariant</code>|<code>sentieon</code>)</td>
 <td><code>string</code></td>
 <td>deepvariant</td>
 <td></td>
@@ -1533,6 +1565,14 @@
 <td>True</td>
 </tr>
 <tr>
+<td><code>extra_hifiasm_options</code></td>
+<td>Extra options to hifiasm, used for test profile.</td>
+<td><code>string</code></td>
+<td></td>
+<td></td>
+<td>True</td>
+</tr>
+<tr>
 <td><code>extra_methbat_profile_options</code></td>
 <td>Extra options to methbat profile.</td>
 <td><code>string</code></td>
@@ -1549,14 +1589,6 @@
 <td>True</td>
 </tr>
 <tr>
-<td><code>extra_vep_options</code></td>
-<td>Extra options to VEP, used for test profile.</td>
-<td><code>string</code></td>
-<td></td>
-<td></td>
-<td>True</td>
-</tr>
-<tr>
 <td><code>extra_paraphase_options</code></td>
 <td>Extra options to Paraphase, used for test profile.</td>
 <td><code>string</code></td>
@@ -1565,8 +1597,16 @@
 <td>True</td>
 </tr>
 <tr>
-<td><code>extra_hifiasm_options</code></td>
-<td>Extra options to hifiasm, used for test profile.</td>
+<td><code>extra_sawfish_options</code></td>
+<td>Extra options to Sawfish, used for test profile.</td>
+<td><code>string</code></td>
+<td></td>
+<td></td>
+<td>True</td>
+</tr>
+<tr>
+<td><code>extra_vep_options</code></td>
+<td>Extra options to VEP, used for test profile.</td>
 <td><code>string</code></td>
 <td></td>
 <td></td>
@@ -1732,6 +1772,46 @@
 <td></td>
 <td></td>
 </tr>
+<tr>
+<td><code>sentieon_model_bundle</code></td>
+<td>The location of the DNAscope model bundle. Model bundle files can be found in the sentieon-models Github repository.</td>
+<td><code>string</code></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code>sentieon_tech</code></td>
+<td>Sequencing technology used to generate the reads. Supported arguments are ONT or HiFi. (accepted: <code>HiFi</code>|<code>ONT</code>)</td>
+<td><code>string</code></td>
+<td>HiFi</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code>sentieon_male_haploid_bed</code></td>
+<td>Interval in the reference to restrict haploid variant calling for males, in BED file format.</td>
+<td><code>string</code></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code>sentieon_male_diploid_bed</code></td>
+<td>Interval in the reference to restrict diploid variant calling for males, in BED file format.</td>
+<td><code>string</code></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code>sentieon_female_diploid_bed</code></td>
+<td>Interval in the reference to restrict diploid variant calling for females, in BED file format.</td>
+<td><code>string</code></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
 </tbody>
 </table>
 
@@ -1832,7 +1912,7 @@
       <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["content.code.annotate", "content.code.copy", "navigation.instant", "navigation.top", "navigation.tracking", "navigation.sections", "navigation.footer", "search.share", "toc.follow"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
       
     
   </body>
