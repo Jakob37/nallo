@@ -317,6 +317,36 @@ Turned off with `--skip_methylation_calling`.
 
     By default, samples are compared to the background cohort with the same sex as found in the sample metadata. If the background cohort tsv file does not contain MALE and FEMALE labels, this can be changed with `--methbat_male_label` and `--methbat_female_label`. Additional labels can be added with --profile-label through the `--extra_methbat_profile_options` parameter.
 
+#### UPD calling
+
+UPD calling is optional (`--skip_upd` is true by default). When enabled, Nallo runs
+`upd regions` and `upd sites` for each child whose mother and father are both
+present in the family. UPD uses the unfiltered Echtvar output so that general-purpose
+pre-VEP filtering cannot remove or bias UPD-informative sites.
+
+UPD therefore requires SNV annotation and at least one database supplied through
+`--echtvar_snv_databases` that adds an allele-frequency INFO field. Set
+`--upd_af_tag` to that field's name. It defaults to `--chromograph_af_tag` when
+the same frequency annotation is used for both analyses.
+
+For example:
+
+```bash
+nextflow run genomic-medicine-sweden/nallo \
+    -profile singularity \
+    --input /path/to/samplesheet.csv \
+    --outdir /path/to/results \
+    --skip_upd false \
+    --echtvar_snv_databases /path/to/echtvar_databases.csv \
+    --upd_af_tag gnomad_af
+```
+
+The frequency database must match the reference genome and chromosome naming used
+for SNV calling. The SNV calling regions must cover the regions being assessed for
+UPD, and genotype quality (`GQ`) is required for all three family members. UPD
+depends on SNV annotation but remains independent of Chromograph and Gens input
+preparation.
+
 #### Gens input preparation
 
 This subworkflow prepares coverage and B-allele frequency (BAF) files for downstream use in [Gens](https://github.com/SMD-Bioinformatics-Lund/gens). It relies on the alignment and SNV calling subworkflows and requires the following additional files:

@@ -178,6 +178,7 @@ workflow PIPELINE_INITIALISATION {
         mitochondrial: "skip_mitochondrial_calling",
         qc: "skip_qc",
         gens: "skip_prepare_gens_input",
+        upd: "skip_upd",
         sex_check: "skip_sex_check",
         portello: "skip_portello",
     ]
@@ -205,6 +206,7 @@ workflow PIPELINE_INITIALISATION {
         methylation_annotation: ["mapping", "snv_calling", "methylation"],
         mitochondrial: ["mapping"],
         gens: ["mapping", "snv_calling"],
+        upd: ["mapping", "snv_calling", "snv_annotation"],
         portello: ["mapping", "assembly"],
     ]
 
@@ -224,6 +226,7 @@ workflow PIPELINE_INITIALISATION {
         repeat_calling: ["str_bed"],
         repeat_annotation: ["stranger_repeat_catalog"],
         gens: ["gens_baf_positions", "gens_panel_of_normals_female", "gens_panel_of_normals_male", "gens_coverage_bins"],
+        upd: ["echtvar_snv_databases"],
         sex_check: ["somalier_sites"],
     ]
 
@@ -248,6 +251,7 @@ workflow PIPELINE_INITIALISATION {
         skip_qc: val_skip_qc,
         skip_genome_assembly: val_skip_genome_assembly,
         skip_prepare_gens_input: val_skip_prepare_gens_input,
+        skip_upd: params.skip_upd,
         skip_sex_check: val_skip_sex_check,
         skip_portello: val_skip_portello,
     ], files: [
@@ -280,6 +284,9 @@ workflow PIPELINE_INITIALISATION {
     // Custom validation for pipeline parameters
     //
     validateInputParameters(parameterStatus, workflowSkips, workflowDependencies, fileDependencies)
+    if (!params.skip_upd && !params.upd_af_tag) {
+        error("ERROR: --upd_af_tag is required for UPD calling.")
+    }
     validatePacBioLicense(val_phaser, val_str_caller, val_sv_callers, val_sv_callers_to_run, val_sv_callers_to_merge, val_skip_call_paralogs, val_mitochondrial_caller, val_skip_portello)
     validateWorkflowCompatibility(val_str_caller, val_skip_repeat_annotation, val_snv_caller, val_snv_calling_processes, val_skip_sv_calling, val_sv_callers_to_run, val_skip_snv_calling, val_cnv_expected_xy_cn, val_cnv_expected_xx_cn, val_cnv_excluded_regions, val_skip_phasing, val_phaser, val_sv_callers_to_merge, val_premapped, val_skip_portello)
 

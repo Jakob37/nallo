@@ -1,0 +1,34 @@
+nextflow_function {
+    name "Test Nallo UPD trio selection"
+    script "../main.nf"
+
+    tag "subworkflows"
+    tag "subworkflows_local"
+    tag "call_upd"
+    tag "subworkflows/call_upd"
+
+    test("selects both complete trios and excludes a child without its mother") {
+        function "eligibleUpdTrios"
+
+        when {
+            function {
+                """
+                input[0] = 'FAM'
+                input[1] = [
+                    [id: 'father', paternal_id: 0, maternal_id: 0],
+                    [id: 'mother', paternal_id: 0, maternal_id: 0],
+                    [id: 'child1', paternal_id: 'father', maternal_id: 'mother'],
+                    [id: 'child2', paternal_id: 'father', maternal_id: 'mother'],
+                    [id: 'child3', paternal_id: 'father', maternal_id: 'missing']
+                ]
+                """
+            }
+        }
+
+        then {
+            assert function.success
+            assert function.result.collect { it[1].id } == ['child1', 'child2']
+            assert function.result.every { it[0] == 'FAM' && it[2] == 'mother' && it[3] == 'father' }
+        }
+    }
+}

@@ -1,0 +1,57 @@
+{
+    "calls UPD on a small annotated trio VCF": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "earlycasualcaiman",
+                            "family_id": "FAM",
+                            "mother": "slowlycivilbuck",
+                            "father": "hugelymodelbat"
+                        },
+                        "earlycasualcaiman.upd.regions.bed:md5,beea3890636075d5c99db1b0d74f9ff5"
+                    ]
+                ],
+                "1": [
+                    [
+                        {
+                            "id": "earlycasualcaiman",
+                            "family_id": "FAM",
+                            "mother": "slowlycivilbuck",
+                            "father": "hugelymodelbat"
+                        },
+                        "earlycasualcaiman.upd.sites.bed:md5,73a3838b4978369182ea02076f7dcf6c"
+                    ]
+                ],
+                "regions": [
+                    [
+                        {
+                            "id": "earlycasualcaiman",
+                            "family_id": "FAM",
+                            "mother": "slowlycivilbuck",
+                            "father": "hugelymodelbat"
+                        },
+                        "earlycasualcaiman.upd.regions.bed:md5,beea3890636075d5c99db1b0d74f9ff5"
+                    ]
+                ],
+                "sites": [
+                    [
+                        {
+                            "id": "earlycasualcaiman",
+                            "family_id": "FAM",
+                            "mother": "slowlycivilbuck",
+                            "father": "hugelymodelbat"
+                        },
+                        "earlycasualcaiman.upd.sites.bed:md5,73a3838b4978369182ea02076f7dcf6c"
+                    ]
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.0"
+        },
+        "timestamp": "2026-09-23T13:24:04.863899318"
+    }
+}

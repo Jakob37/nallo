@@ -1,0 +1,71 @@
+nextflow_workflow {
+    name "Test Workflow CALL_UPD"
+    script "../main.nf"
+    workflow "CALL_UPD"
+
+    tag "subworkflows"
+    tag "subworkflows_local"
+    tag "call_upd"
+    tag "subworkflows/call_upd"
+
+    test("calls UPD on a small annotated trio VCF") {
+        when {
+            params {
+                upd_af_tag = 'AF'
+            }
+            workflow {
+                """
+                def region = [id: 'region_1', family_id: 'FAM', num_intervals: 1]
+                input[0] = Channel.of([
+                    region,
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/ped/justhusky_minimal.vcf.gz', checkIfExists: true)
+                ])
+                input[1] = Channel.of(
+                    [[id: 'hugelymodelbat', family_id: 'FAM', paternal_id: 0, maternal_id: 0], []],
+                    [[id: 'slowlycivilbuck', family_id: 'FAM', paternal_id: 0, maternal_id: 0], []],
+                    [[id: 'earlycasualcaiman', family_id: 'FAM', paternal_id: 'hugelymodelbat', maternal_id: 'slowlycivilbuck'], []]
+                )
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert workflow.out.regions.size() == 1 },
+                { assert workflow.out.sites.size() == 1 },
+                { assert snapshot(workflow.out).match() }
+            )
+        }
+    }
+
+    test("calls UPD for complete trios only") {
+        options "-stub"
+
+        when {
+            workflow {
+                """
+                def region_1 = [id: 'region_1', family_id: 'FAM', num_intervals: 2]
+                def region_2 = [id: 'region_2', family_id: 'FAM', num_intervals: 2]
+                input[0] = Channel.of(
+                    [region_1, file("$projectDir/assets/multiqc_config.yml")],
+                    [region_2, file("$projectDir/assets/schema_input.json")]
+                )
+                input[1] = Channel.of(
+                    [[id: 'father', family_id: 'FAM', paternal_id: 0, maternal_id: 0], []],
+                    [[id: 'mother', family_id: 'FAM', paternal_id: 0, maternal_id: 0], []],
+                    [[id: 'child', family_id: 'FAM', paternal_id: 'father', maternal_id: 'mother'], []],
+                    [[id: 'incomplete', family_id: 'FAM', paternal_id: 'father', maternal_id: 'absent'], []]
+                )
+                """
+            }
+        }
+
+        then {
+            assert workflow.success
+            assert workflow.out.sites.size() == 1
+            assert workflow.out.sites.get(0).get(0).id == 'child'
+            assert workflow.out.regions.size() == 1
+        }
+    }
+}
