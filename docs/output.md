@@ -270,6 +270,13 @@ When `--skip_prepare_gens_input` is disabled, the pipeline prepares coverage and
 | `gens/{sample}/{sample}.baf.bed.gz`     | B-allele frequency estimates at the provided positions                                |
 | `gens/{sample}/{sample}.baf.bed.gz.tbi` | Index of the BAF BED file                                                             |
 
+When `--skip_upd false` is set, complete parent-child trios also produce UPD calls:
+
+| Path                                           | Description                                                    |
+| ---------------------------------------------- | -------------------------------------------------------------- |
+| `upd/{family}/{child}/{child}.upd.regions.bed` | Called UPD regions for the child                               |
+| `upd/{family}/{child}/{child}.upd.sites.bed`   | Classified sites used for UPD calling and future Gens metadata |
+
 ### SVs (and CNVs)
 
 [Severus](https://github.com/KolmogorovLab/Severus), [Sniffles](https://github.com/fritzsedlazeck/Sniffles) (v2 or v1) or [DeBreak](https://github.com/Maggi-Chen/DeBreak) are used to call structural variants, while [HiFiCNV](https://github.com/PacificBiosciences/HiFiCNV) is used to call CNVs. HiFiCNV also produces copy number, depth, and MAF [visualization tracks](#visualization-tracks). [Sawfish](https://github.com/PacificBiosciences/sawfish) calls both SVs and CNVs by default.

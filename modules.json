@@ -515,6 +515,11 @@
                         "installed_by": ["modules"],
                         "patch": "modules/nf-core/untar/untar.diff"
                     },
+                    "upd": {
+                        "branch": "master",
+                        "git_sha": "5a3ad078bbf1192276d13168000a784b13ef0d89",
+                        "installed_by": ["modules"]
+                    },
                     "vcfexpress": {
                         "branch": "master",
                         "git_sha": "25e9c8a35e761e5f067bb615cd1080fb2942e71e",

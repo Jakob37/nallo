@@ -22,6 +22,7 @@ include { CALL_PARALOGS                                          } from '../subw
 include { CALL_REPEAT_EXPANSIONS_STRDUST                         } from '../subworkflows/local/call_repeat_expansions_strdust'
 include { CALL_REPEAT_EXPANSIONS_TRGT                            } from '../subworkflows/local/call_repeat_expansions_trgt'
 include { CALL_SNVS                                              } from '../subworkflows/local/call_snvs'
+include { CALL_UPD                                               } from '../subworkflows/local/call_upd'
 include { CALL_SVS                                               } from '../subworkflows/local/call_svs'
 include { GENOME_ASSEMBLY                                        } from '../subworkflows/local/genome_assembly'
 include { GVCF_GLNEXUS_NORM_VARIANTS                             } from '../subworkflows/local/gvcf_glnexus_norm_variants'
@@ -838,6 +839,13 @@ workflow NALLO {
             ch_cadd_prescored_indels,
             val_pre_vep_snv_filter_expression != '',
         )
+
+        if (!params.skip_upd) {
+            CALL_UPD(
+                ANNOTATE_SNVS.out.echtvar_annotated_vcf,
+                ch_samplesheet,
+            )
+        }
 
         ch_clin_research_snvs_vcf = ANNOTATE_SNVS.out.vep_annotated_vcf.multiMap { meta, vcf ->
             clinical: [meta + [set: "clinical"], vcf]

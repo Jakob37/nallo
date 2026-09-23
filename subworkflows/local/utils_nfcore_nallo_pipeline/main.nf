@@ -178,6 +178,7 @@ workflow PIPELINE_INITIALISATION {
         mitochondrial: "skip_mitochondrial_calling",
         qc: "skip_qc",
         gens: "skip_prepare_gens_input",
+        upd: "skip_upd",
         sex_check: "skip_sex_check",
         portello: "skip_portello",
     ]
@@ -205,6 +206,7 @@ workflow PIPELINE_INITIALISATION {
         methylation_annotation: ["mapping", "snv_calling", "methylation"],
         mitochondrial: ["mapping"],
         gens: ["mapping", "snv_calling"],
+        upd: ["mapping", "snv_calling", "snv_annotation"],
         portello: ["mapping", "assembly"],
     ]
 
@@ -224,6 +226,7 @@ workflow PIPELINE_INITIALISATION {
         repeat_calling: ["str_bed"],
         repeat_annotation: ["stranger_repeat_catalog"],
         gens: ["gens_baf_positions", "gens_panel_of_normals_female", "gens_panel_of_normals_male", "gens_coverage_bins"],
+        upd: ["echtvar_snv_databases"],
         sex_check: ["somalier_sites"],
     ]
 
@@ -248,6 +251,7 @@ workflow PIPELINE_INITIALISATION {
         skip_qc: val_skip_qc,
         skip_genome_assembly: val_skip_genome_assembly,
         skip_prepare_gens_input: val_skip_prepare_gens_input,
+        skip_upd: params.skip_upd,
         skip_sex_check: val_skip_sex_check,
         skip_portello: val_skip_portello,
     ], files: [
@@ -330,6 +334,11 @@ workflow PIPELINE_INITIALISATION {
     // Check that target_regions is provided when using the ONT_R10_AS preset
     if (val_preset == 'ONT_R10_AS' && !val_target_regions) {
         error("Error: --target_regions must be provided when using --preset ONT_R10_AS. The ONT_R10_AS preset is designed for adaptive sampling runs which require target regions for calling and QC.")
+    }
+
+    // Check that an allele frequency tag is available when UPD calling is active
+    if (!params.skip_upd && !params.upd_af_tag) {
+        error("Error: --upd_af_tag is required when UPD calling is enabled. Set --upd_af_tag or --chromograph_af_tag, or set --skip_upd true to disable UPD calling.")
     }
 
     // Check that sex check is not skipped if there are samples with unknown sex

@@ -27,6 +27,7 @@ Allows skipping certain parts of the pipeline
 | `skip_call_paralogs` | Skip the calling of specific paralogous genes | `boolean` | False |  |  |
 | `skip_rank_variants` | Skip ranking of short variants | `boolean` | False |  |  |
 | `skip_prepare_gens_input` | Skip preparing input data for Gens | `boolean` | False |  |  |
+| `skip_upd` | Skip UPD calling for complete parent-child trios | `boolean` | True |  |  |
 | `skip_mitochondrial_calling` | Skip mitochondrial variant calling | `boolean` | False |  |  |
 | `skip_sex_check` | Skip sex check | `boolean` | False |  |  |
 | `skip_portello` | Skip Portello analysis | `boolean` | False |  |  |
@@ -75,6 +76,7 @@ Define where the pipeline should find input data and save output data.
 | `gens_panel_of_normals_female` | Panel of normals of female samples (HDF5) used to standardize coverage for Gens inputs (https://gatk.broadinstitute.org/hc/en-us/articles/360040510031-CreateReadCountPanelOfNormals). This can be generated using https://github.com/nf-core/createpanelrefs. For long reads we have used mosdepth to calculate coverage per-bin rather than counting reads per bin, and then created a panel of normals using the GATK command. | `string` |  |  |  |
 | `gens_panel_of_normals_male` | Panel of normals of male samples (HDF5) used to standardize coverage for Gens inputs (https://gatk.broadinstitute.org/hc/en-us/articles/360040510031-CreateReadCountPanelOfNormals). This can be generated using https://github.com/nf-core/createpanelrefs. For long reads we have used mosdepth to calculate coverage per-bin rather than counting reads per bin, and then created a panel of normals using the GATK command. | `string` |  |  |  |
 | `gens_coverage_bins` | Bed file with bins for which to calculate coverage. Typically 100bp bins across the genome is used in Gens. It should be the same as the one used to prepare the panel of normals. | `string` |  |  |  |
+| `upd_af_tag` | INFO tag containing allele frequencies for UPD calling. Defaults to --chromograph_af_tag when set. | `string` |  |  |  |
 | `strdrop_training_set_json` | A JSON file containing the training set for strdrop | `string` |  |  |  |
 | `paraphrase_output_format` | Output format for paralog annotation from Paraphrase. Either `tsv` or `json`. (accepted: `tsv`\|`json`) | `string` | tsv |  |  |
 | `paraphrase_rules` | A file path to a YAML file with rules for paraphrase to use when annotating paralogs. For an example, see: https://github.com/Clinical-Genomics/paraphrase/blob/main/test-data/rules.yaml. | `string` |  |  |  |

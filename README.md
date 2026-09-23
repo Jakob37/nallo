@@ -40,6 +40,7 @@
 - Call CNVs with [HiFiCNV](https://github.com/PacificBiosciences/HiFiCNV)
 - Call tandem repeats with [TRGT](https://github.com/PacificBiosciences/trgt/tree/main) (PacBio only) or [STRdust](https://github.com/wdecoster/STRdust)
 - Call paralogous genes with [Paraphase](https://github.com/PacificBiosciences/paraphase) (PacBio only)
+- Call uniparental disomy in complete trios with [UPD](https://github.com/bjhall/upd) (optional)
 
 ##### Phasing and methylation
 
