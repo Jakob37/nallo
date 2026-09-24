@@ -19,6 +19,7 @@ workflow CHROMOGRAPH {
     main:
     ch_autozyg = channel.empty()
     ch_coverage = channel.empty()
+    ch_roh = channel.empty()
 
     if (plot_coverage) {
         TIDDIT_COV(
@@ -44,6 +45,7 @@ workflow CHROMOGRAPH {
             [],
             [],
         )
+        ch_roh = BCFTOOLS_ROH.out.roh
 
         BCFTOOLS_VIEW_UNCOMPRESS(
             ch_vcf_tbi,
@@ -97,4 +99,5 @@ workflow CHROMOGRAPH {
 
     emit:
     chromograph_plots = RUN_CHROMOGRAPH.out.plots // channel: [ val(meta), path(plot) ]
+    roh = ch_roh
 }

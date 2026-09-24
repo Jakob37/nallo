@@ -117,6 +117,11 @@
                     "description": "Skip preparing input data for Gens",
                     "default": false
                 },
+                "skip_gens_metadata": {
+                    "type": "boolean",
+                    "description": "Skip Gens metadata and ROH/UPD track generation",
+                    "default": true
+                },
                 "skip_upd": {
                     "type": "boolean",
                     "description": "Skip UPD calling for complete parent-child trios",

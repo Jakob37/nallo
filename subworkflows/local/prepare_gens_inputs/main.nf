@@ -92,4 +92,5 @@ workflow PREPARE_GENS_INPUTS {
     emit:
     cov_bed_tbi = ch_cov_gz_tbi // channel: [ val(meta), path(bed_gz), path(tbi) ]
     baf_bed_tbi = ch_baf_gz_tbi // channel: [ val(meta), path(bed_gz), path(tbi) ]
+    denoised_ratios = GATK4_DENOISEREADCOUNTS.out.denoised
 }
