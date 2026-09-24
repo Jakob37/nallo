@@ -57,9 +57,11 @@ include { PORTELLO                                               } from '../subw
 include { CREATE_PEDIGREE_FILE as SAMPLESHEET_PED                } from '../modules/local/create_pedigree_file/main'
 include { CREATE_PEDIGREE_FILE as SOMALIER_PED_FAMILY            } from '../modules/local/create_pedigree_file/main'
 include { VEP_PREP_SV                                            } from '../modules/local/vep_prep_sv/main'
+include { GENERATE_GENS_METADATA                                 } from '../modules/local/generate_gens_metadata/main'
 
 // nf-core
 include { BCFTOOLS_CONCAT as BCFTOOLS_CONCAT_PHASING             } from '../modules/nf-core/bcftools/concat/main'
+include { BCFTOOLS_ROH as BCFTOOLS_ROH_GENS                       } from '../modules/nf-core/bcftools/roh/main'
 include { BCFTOOLS_CONCAT as BCFTOOLS_CONCAT_MITO_SNVS           } from '../modules/nf-core/bcftools/concat/main'
 include { BCFTOOLS_SORT as BCFTOOLS_SORT_SVS                     } from '../modules/nf-core/bcftools/sort/main'
 include { BCFTOOLS_VIEW as BCFTOOLS_VIEW_CHROMOGRAPH             } from '../modules/nf-core/bcftools/view/main'
@@ -879,8 +881,9 @@ workflow NALLO {
     // Concatenate and sort annotated SNVs for chromograph - requires an AF-tag, e.g. gnomad_af
     //
     def split_family_vcf_for_chromograph = !val_skip_chromograph && val_plot_chromograph_autozygosity && !val_skip_snv_annotation
+    def split_family_vcf_for_roh = split_family_vcf_for_chromograph || !params.skip_gens_metadata
 
-    if (split_family_vcf_for_chromograph || (!val_skip_peddy && !val_skip_snv_annotation)) {
+    if (split_family_vcf_for_roh || (!val_skip_peddy && !val_skip_snv_annotation)) {
 
         // use echtvar_annotated_vcf for chromograph and peddy, to use all variants, not just those that pass the pre-annotation filter
         // if echtvar annotation is skipped, use the unannotated VCFs instead
@@ -900,7 +903,7 @@ workflow NALLO {
         )
     }
 
-    if (split_family_vcf_for_chromograph) {
+    if (split_family_vcf_for_roh) {
         // Transpose family-level VCFs and add sample IDs by combining with samplesheet meta
         ch_bcftools_view_chromograph_input = ch_samplesheet
             .map { meta, _files -> [id: meta.id, family_id: meta.family_id] }
@@ -966,6 +969,46 @@ workflow NALLO {
             split_family_vcf_for_chromograph ? BCFTOOLS_VIEW_CHROMOGRAPH.out.tbi : channel.empty(),
             val_plot_chromograph_coverage,
             val_plot_chromograph_autozygosity,
+        )
+    }
+
+    if (!params.skip_gens_metadata) {
+        // Reuse Chromograph's ROH call when its autozygosity plot is active.
+        if (!split_family_vcf_for_chromograph) {
+            BCFTOOLS_ROH_GENS(
+                BCFTOOLS_VIEW_CHROMOGRAPH.out.vcf.join(BCFTOOLS_VIEW_CHROMOGRAPH.out.tbi, failOnMismatch: true, failOnDuplicate: true),
+                [[], []], [], [], [], [],
+            )
+        }
+        ch_gens_roh = split_family_vcf_for_chromograph ? CHROMOGRAPH.out.roh : BCFTOOLS_ROH_GENS.out.roh
+
+        ch_gens_base = PREPARE_GENS_INPUTS.out.denoised_ratios
+            .map { meta, ratios -> [meta.id, meta, ratios] }
+            .join(ch_gens_roh.map { meta, roh -> [meta.id, roh] }, failOnMismatch: true, failOnDuplicate: true)
+            .map { _id, meta, ratios, roh -> [meta, ratios, roh] }
+
+        // UPD runs only for complete trios. Collecting the optional outputs
+        // lets every sample continue even when UPD is skipped or ineligible.
+        ch_gens_upd = params.skip_upd
+            ? channel.value([:])
+            : CALL_UPD.out.regions
+                .map { meta, regions -> [meta.id, regions] }
+                .join(CALL_UPD.out.sites.map { meta, sites -> [meta.id, sites] }, failOnMismatch: true, failOnDuplicate: true)
+                .collect(flat: false)
+                .map { rows -> rows.collectEntries { id, regions, sites -> [(id): [regions, sites]] } }
+                .ifEmpty([:])
+
+        ch_gens_metadata_input = ch_gens_base
+            .combine(ch_gens_upd)
+            .map { meta, ratios, roh, upd ->
+                def files = upd[meta.id] ?: [[], []]
+                [meta, ratios, roh, files[0], files[1]]
+            }
+
+        GENERATE_GENS_METADATA(
+            ch_gens_metadata_input,
+            ch_fai.map { _meta, fai -> fai },
+            file("${projectDir}/bin/generate_gens_metadata.py"),
         )
     }
 
@@ -1283,6 +1326,10 @@ workflow NALLO {
     gens_baf_tbi                        = val_skip_prepare_gens_input ? channel.empty() : PREPARE_GENS_INPUTS.out.baf_bed_tbi.map { meta, _bed, tbi -> [meta, tbi] } // channel: [ val(meta), path(baf.bed.gz.tbi) ]
     gens_cov_bed                        = val_skip_prepare_gens_input ? channel.empty() : PREPARE_GENS_INPUTS.out.cov_bed_tbi.map { meta, bed, _tbi -> [meta, bed] } // channel: [ val(meta), path(cov.bed.gz) ]
     gens_cov_tbi                        = val_skip_prepare_gens_input ? channel.empty() : PREPARE_GENS_INPUTS.out.cov_bed_tbi.map { meta, _bed, tbi -> [meta, tbi] } // channel: [ val(meta), path(cov.bed.gz.tbi) ]
+    gens_sample_meta                    = params.skip_gens_metadata ? channel.empty() : GENERATE_GENS_METADATA.out.sample_meta
+    gens_chrom_meta                     = params.skip_gens_metadata ? channel.empty() : GENERATE_GENS_METADATA.out.chrom_meta
+    gens_roh_track                      = params.skip_gens_metadata ? channel.empty() : GENERATE_GENS_METADATA.out.roh_track
+    gens_upd_track                      = params.skip_gens_metadata ? channel.empty() : GENERATE_GENS_METADATA.out.upd_track
     hificnv_copynum_bedgraph            = val_skip_sv_calling ? channel.empty() : CALL_SVS.out.hificnv_copynum // channel: [ val(meta), path(bedgraph) ]
     hificnv_depth_bw                    = val_skip_sv_calling ? channel.empty() : CALL_SVS.out.hificnv_depth // channel: [ val(meta), path(bw) ]
     hificnv_maf_bw                      = val_skip_sv_calling ? channel.empty() : CALL_SVS.out.hificnv_maf // channel: [ val(meta), path(bw) ]

@@ -178,6 +178,7 @@ workflow PIPELINE_INITIALISATION {
         mitochondrial: "skip_mitochondrial_calling",
         qc: "skip_qc",
         gens: "skip_prepare_gens_input",
+        gens_metadata: "skip_gens_metadata",
         upd: "skip_upd",
         sex_check: "skip_sex_check",
         portello: "skip_portello",
@@ -206,6 +207,7 @@ workflow PIPELINE_INITIALISATION {
         methylation_annotation: ["mapping", "snv_calling", "methylation"],
         mitochondrial: ["mapping"],
         gens: ["mapping", "snv_calling"],
+        gens_metadata: ["mapping", "snv_calling", "snv_annotation", "gens"],
         upd: ["mapping", "snv_calling", "snv_annotation"],
         portello: ["mapping", "assembly"],
     ]
@@ -251,6 +253,7 @@ workflow PIPELINE_INITIALISATION {
         skip_qc: val_skip_qc,
         skip_genome_assembly: val_skip_genome_assembly,
         skip_prepare_gens_input: val_skip_prepare_gens_input,
+        skip_gens_metadata: params.skip_gens_metadata,
         skip_upd: params.skip_upd,
         skip_sex_check: val_skip_sex_check,
         skip_portello: val_skip_portello,
@@ -339,6 +342,9 @@ workflow PIPELINE_INITIALISATION {
     // Check that an allele frequency tag is available when UPD calling is active
     if (!params.skip_upd && !params.upd_af_tag) {
         error("Error: --upd_af_tag is required when UPD calling is enabled. Set --upd_af_tag or --chromograph_af_tag, or set --skip_upd true to disable UPD calling.")
+    }
+    if (!params.skip_gens_metadata && !params.bcftools_roh_af_tag) {
+        error("Error: --bcftools_roh_af_tag is required when Gens metadata is enabled.")
     }
 
     // Check that sex check is not skipped if there are samples with unknown sex

@@ -287,6 +287,10 @@ workflow GENOMICMEDICINESWEDEN_NALLO {
     gens_baf_tbi                        = NALLO.out.gens_baf_tbi // channel: [ val(meta), path(baf.bed.gz.tbi) ]
     gens_cov_bed                        = NALLO.out.gens_cov_bed // channel: [ val(meta), path(cov.bed.gz) ]
     gens_cov_tbi                        = NALLO.out.gens_cov_tbi // channel: [ val(meta), path(cov.bed.gz.tbi) ]
+    gens_sample_meta                    = NALLO.out.gens_sample_meta
+    gens_chrom_meta                     = NALLO.out.gens_chrom_meta
+    gens_roh_track                      = NALLO.out.gens_roh_track
+    gens_upd_track                      = NALLO.out.gens_upd_track
     hificnv_copynum_bedgraph            = NALLO.out.hificnv_copynum_bedgraph // channel: [ val(meta), path(bedgraph) ]
     hificnv_depth_bw                    = NALLO.out.hificnv_depth_bw // channel: [ val(meta), path(bw) ]
     hificnv_maf_bw                      = NALLO.out.hificnv_maf_bw // channel: [ val(meta), path(bw) ]
@@ -610,6 +614,10 @@ workflow {
         .mix(GENOMICMEDICINESWEDEN_NALLO.out.gens_baf_tbi)
         .mix(GENOMICMEDICINESWEDEN_NALLO.out.gens_cov_bed)
         .mix(GENOMICMEDICINESWEDEN_NALLO.out.gens_cov_tbi)
+        .mix(GENOMICMEDICINESWEDEN_NALLO.out.gens_sample_meta)
+        .mix(GENOMICMEDICINESWEDEN_NALLO.out.gens_chrom_meta)
+        .mix(GENOMICMEDICINESWEDEN_NALLO.out.gens_roh_track)
+        .mix(GENOMICMEDICINESWEDEN_NALLO.out.gens_upd_track)
 
 
     ch_methylation_pileup = GENOMICMEDICINESWEDEN_NALLO.out.methylation_methbat_combined_bed

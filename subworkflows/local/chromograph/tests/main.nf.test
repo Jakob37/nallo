@@ -80,7 +80,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(workflow.out).match() }
+                { assert snapshot([0: workflow.out.chromograph_plots, chromograph_plots: workflow.out.chromograph_plots]).match() }
             )
         }
 
@@ -110,7 +110,7 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.success },
                 { assert workflow.out.chromograph_plots.every { meta, _plots -> meta.id == 'HG003' } },
-                { assert snapshot(workflow.out).match() }
+                { assert snapshot([0: workflow.out.chromograph_plots, chromograph_plots: workflow.out.chromograph_plots]).match() }
             )
         }
 
@@ -139,7 +139,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(workflow.out).match() }
+                { assert snapshot([0: workflow.out.chromograph_plots, chromograph_plots: workflow.out.chromograph_plots]).match() }
             )
         }
 
@@ -168,7 +168,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(workflow.out).match() }
+                { assert snapshot([0: workflow.out.chromograph_plots, chromograph_plots: workflow.out.chromograph_plots]).match() }
             )
         }
 
@@ -199,7 +199,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(workflow.out).match() }
+                { assert snapshot([0: workflow.out.chromograph_plots, chromograph_plots: workflow.out.chromograph_plots]).match() }
             )
         }
 
@@ -231,7 +231,7 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.success },
                 { assert workflow.out.chromograph_plots.every { meta, _plots -> meta.id == 'HG003' } },
-                { assert snapshot(workflow.out).match() }
+                { assert snapshot([0: workflow.out.chromograph_plots, chromograph_plots: workflow.out.chromograph_plots]).match() }
             )
         }
 
@@ -262,7 +262,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(workflow.out).match() }
+                { assert snapshot([0: workflow.out.chromograph_plots, chromograph_plots: workflow.out.chromograph_plots]).match() }
             )
         }
 
@@ -293,7 +293,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(workflow.out).match() }
+                { assert snapshot([0: workflow.out.chromograph_plots, chromograph_plots: workflow.out.chromograph_plots]).match() }
             )
         }
 

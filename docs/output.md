@@ -263,12 +263,18 @@ In general, annotated variant calls are output per family while unannotated call
 
 When `--skip_prepare_gens_input` is disabled, the pipeline prepares coverage and B-allele frequency files that can be loaded by downstream Gens workflows.
 
+When `--skip_gens_metadata false` is set, each sample also gets a sample metadata TSV, chromosome metadata TSV, and ROH track in `gens/<sample>/`. Complete trio probands get UPD chromosome statistics and a UPD track when UPD calling is enabled. This requires Gens input preparation, SNV annotation, and `--bcftools_roh_af_tag`. ROH uses Nallo's existing `--AF-tag` and `--skip-indels` settings. The `Non-informative` UPD statistic currently follows the OLWGS formatter and needs review against the UPD caller's category definitions.
+
 | Path                                    | Description                                                                           |
 | --------------------------------------- | ------------------------------------------------------------------------------------- |
 | `gens/{sample}/{sample}.cov.bed.gz`     | Coverage data normalized either against a panel of normal or the samples median value |
 | `gens/{sample}/{sample}.cov.bed.gz.tbi` | Index of the coverage BED file                                                        |
 | `gens/{sample}/{sample}.baf.bed.gz`     | B-allele frequency estimates at the provided positions                                |
 | `gens/{sample}/{sample}.baf.bed.gz.tbi` | Index of the BAF BED file                                                             |
+| `gens/{sample}/{sample}.meta.tsv` | Sample-wide Gens metadata, including autosomal LOH percentage |
+| `gens/{sample}/{sample}.chrom_meta.tsv` | Chromosome copy number and, for trio probands with UPD results, UPD site statistics |
+| `gens/{sample}/{sample}.gens_track.roh.bed` | ROH annotation track |
+| `gens/{sample}/{sample}.gens_track.upd.bed` | UPD annotation track for trio probands when UPD ran |
 
 When `--skip_upd false` is set, complete parent-child trios also produce UPD calls:
 
